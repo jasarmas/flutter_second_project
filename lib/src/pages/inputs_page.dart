@@ -10,8 +10,11 @@ class _InputsPageState extends State<InputsPage> {
   String _email = "";
   String _password = "";
   String _date = "";
+  String _selectedOption = "Volar";
 
   TextEditingController _inputFieldDateController = new TextEditingController();
+
+  List<String> _powers = ["Volar", "Rayozz X", "Super Aliento", "Super fuerza"];
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +32,8 @@ class _InputsPageState extends State<InputsPage> {
           _createPassword(),
           Divider(),
           _createDate(context),
+          Divider(),
+          _createDropwdown(),
           Divider(),
           _createPerson()
         ],
@@ -60,6 +65,7 @@ class _InputsPageState extends State<InputsPage> {
     return ListTile(
       title: Text("Nombre es: $_name"),
       subtitle: Text("Email: $_email"),
+      trailing: Text(_selectedOption),
     );
   }
 
@@ -125,5 +131,35 @@ class _InputsPageState extends State<InputsPage> {
         _inputFieldDateController.text = _date;
       });
     }
+  }
+
+  List<DropdownMenuItem<String>> getDropdownOptions() {
+    List<DropdownMenuItem<String>> list = new List();
+
+    _powers.forEach((element) {
+      list.add(DropdownMenuItem(
+        child: Text(element),
+        value: element,
+      ));
+    });
+
+    return list;
+  }
+
+  Widget _createDropwdown() {
+    return Row(
+      children: <Widget>[
+        Icon(Icons.select_all),
+        SizedBox(width: 30.0),
+        Expanded(
+          child: DropdownButton(
+              value: _selectedOption,
+              items: getDropdownOptions(),
+              onChanged: (opt) => setState(() {
+                    _selectedOption = opt;
+                  })),
+        ),
+      ],
+    );
   }
 }
