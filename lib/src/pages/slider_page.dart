@@ -6,6 +6,8 @@ class SliderPage extends StatefulWidget {
 }
 
 class _SliderPageState extends State<SliderPage> {
+  double _sliderValue = 100.0;
+  bool _checkBlock = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +15,63 @@ class _SliderPageState extends State<SliderPage> {
           title: Text("Sliders"),
         ),
         body: Container(
-          child: Text("Slider page"),
+          padding: EdgeInsets.only(top: 50.0),
+          child: Column(
+            children: <Widget>[
+              _createSlider(),
+              _createCheckBox(),
+              _createSwitch(),
+              Expanded(child: _createImage()),
+            ],
+          ),
         ));
+  }
+
+  Widget _createSlider() {
+    return Slider(
+      activeColor: Colors.indigoAccent,
+      label: "Tamaño de la imagen",
+      value: _sliderValue,
+      min: 10.0,
+      max: 400.0,
+      onChanged: _checkBlock
+          ? null
+          : (value) {
+              setState(() {
+                _sliderValue = value;
+              });
+            },
+    );
+  }
+
+  Widget _createImage() {
+    return Image(
+      image: NetworkImage(
+          "https://images-na.ssl-images-amazon.com/images/S/pv-target-images/afa52b62887ed55475d095a8e18c5610b2444d28beb5b6ee2f322e6613374bad._V_SX1700_.jpg"),
+      width: _sliderValue,
+      fit: BoxFit.contain,
+    );
+  }
+
+  Widget _createCheckBox() {
+    return CheckboxListTile(
+        value: _checkBlock,
+        title: Text("Bloquear Imagen"),
+        onChanged: (value) {
+          setState(() {
+            _checkBlock = value;
+          });
+        });
+  }
+
+  Widget _createSwitch() {
+    return SwitchListTile(
+        value: _checkBlock,
+        title: Text("Bloquear Imagen"),
+        onChanged: (value) {
+          setState(() {
+            _checkBlock = value;
+          });
+        });
   }
 }
